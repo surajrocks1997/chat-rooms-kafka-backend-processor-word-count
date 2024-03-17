@@ -1,0 +1,35 @@
+Commands for Starting Kafka
+
+1. Go to kafka folder
+
+- to start zookeeper in windows-
+bin\windows\zookeeper-server-start.bat config\zookeeper.properties
+
+- start kafka server
+bin\windows\kafka-server-start.bat config\server.properties
+
+- listen to messages produced to this topic
+//listen to all historical + future messages
+bin\windows\kafka-console-consumer.bat --topic chat-room-topic --from-beginning --bootstrap-server localhost:9092
+bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic chat-room-topic --from-beginning --group my-consumer-group
+
+- different way of printing message in kafka command line
+bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic chat-room-topic --from-beginning --group my-consumer-group --property key.separator=: --property print.key=true --property print.offset=true --property print.partition=true --property print.value=true
+bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic chat-room-aggregator-messages-per-room --from-beginning --property key.separator=: --property print.key=true --property print.offset=true --property print.partition=true --property print.value=true
+bin\windows\kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic chat-room-aggregator-word-count --from-beginning --property key.separator=: --property print.key=true --property print.offset=true --property print.partition=true --property print.value=true
+
+
+// listen to only future messages
+bin\windows\kafka-console-consumer.bat --topic testTopic --bootstrap-server localhost:9092
+
+NOTE: ALL COMMANDS SHOULD BE ON A SEPARATE TERMINAL
+
+-list all topics
+bin\windows\kafka-topics.bat --bootstrap-server localhost:9092 --list --exclude-internal
+
+
+-descibe a kafka topic (get details like topic, partition, leader, replicas etc)
+bin\windows\kafka-topics.bat --bootstrap-server localhost:9092 --describe --topic surajTopic
+
+-delte a topic
+bin\windows\kafka-topics.bat --bootstrap-server localhost:9092 --delete --topic surajTopic

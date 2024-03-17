@@ -1,0 +1,36 @@
+spring:
+  cloud:
+    function:
+      definition: aggregateWordsAndCount
+    stream:
+      kafka:
+        streams:
+          bindings:
+            aggregateWordsAndCount-in-0:
+              consumer:
+                keySerde: org.apache.kafka.common.serialization.Serdes$StringSerde
+                valueSerde: com.example.chatroomskafkabackendprocessorwordcount.converter.ChatMessageSerDes
+
+          binder:
+            configuration:
+              commit.interval.ms: 2000
+        binder:
+          brokers:
+            - localhost:9092
+        bindings:
+          aggregateWordsAndCount-in-0:
+            consumer:
+              configuration:
+                group-id: my-consumer-group
+                value:
+                  deserializer: com.example.chatroomskafkabackendprocessorwordcount.converter.ChatMessageSerDes
+          aggregateWordsAndCount-out-0:
+            consumer:
+              configuration:
+                key.serializer: org.apache.kafka.common.serialization.LongSerializer
+
+      bindings:
+        aggregateWordsAndCount-in-0:
+          destination: chat-room-topic
+        aggregateWordsAndCount-out-0:
+          destination: chat-room-aggregator-word-count
