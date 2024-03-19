@@ -22,7 +22,7 @@ public class ChatKafkaProcessor {
         return kStream -> kStream
                 .flatMapValues(value -> Arrays.asList(value.getMessage().toLowerCase().split("\\W+")))
                 .groupBy((key, value) -> value, Grouped.with(Serdes.String(), Serdes.String()))
-                .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofSeconds(30)))
+                .windowedBy(TimeWindows.ofSizeWithNoGrace(Duration.ofSeconds(5)))
                 .aggregate(() -> 0L,
                         (key, value, aggregate) -> aggregate+1,
                         Materialized.with(Serdes.String(), Serdes.Long()))
